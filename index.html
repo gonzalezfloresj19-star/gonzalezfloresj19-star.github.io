@@ -2,543 +2,1255 @@
 <html lang="es">
 
 <head>
-  <meta charset="UTF-8">
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover"
-  >
+<meta charset="UTF-8">
 
-  <meta name="theme-color" content="#ffffff">
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover"
+>
 
-  <title>RECETARIOXXO | BuzzBallz</title>
+<meta name="theme-color" content="#F7F5F2">
 
-  <!-- PDF.js -->
-  <script
-    src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js">
-  </script>
+<meta
+  name="apple-mobile-web-app-capable"
+  content="yes"
+>
 
-  <style>
+<meta
+  name="apple-mobile-web-app-status-bar-style"
+  content="default"
+>
 
-    :root {
-      --rojo-oxxo: #e30613;
-      --amarillo-oxxo: #ffcc00;
-      --negro: #111111;
-      --gris: #7a7a7a;
-      --fondo: #f4f4f4;
-    }
+<title>RECETARIOXXO · BuzzBallz</title>
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+<meta
+  name="description"
+  content="Descubre recetas fáciles y deliciosas con BuzzBallz e ingredientes que encuentras en OXXO."
+>
 
-    html,
-    body {
-      width: 100%;
-      height: 100%;
-      background: var(--fondo);
-      font-family: Arial, Helvetica, sans-serif;
-      overflow: hidden;
-    }
 
-    body {
-      min-height: 100dvh;
-    }
+<!-- PDF.JS -->
 
-    /* =========================
-       CONTENEDOR PRINCIPAL
-    ========================= */
+<script
+src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js">
+</script>
 
-    .app {
-      width: 100%;
-      max-width: 500px;
-      height: 100dvh;
-      margin: auto;
 
-      display: grid;
-      grid-template-rows: auto 1fr auto;
+<style>
 
-      background: white;
+/* ========================================
+   VARIABLES
+======================================== */
 
-      overflow: hidden;
+:root {
 
-      position: relative;
+  --oxxo-red: #E30613;
 
-      box-shadow:
-        0 0 30px rgba(0, 0, 0, .08);
-    }
+  --oxxo-dark-red: #C9000B;
 
+  --oxxo-yellow: #FFD000;
 
-    /* =========================
-       CABECERA
-    ========================= */
+  --white: #FFFFFF;
 
-    .header {
+  --black: #111111;
 
-      min-height: 48px;
+  --gray: #737373;
 
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+  --soft-gray: #ECE9E5;
 
-      padding:
-        calc(8px + env(safe-area-inset-top))
-        15px
-        8px;
+  --background: #F7F5F2;
 
-      background: white;
+  --shadow:
+    0 18px 60px
+    rgba(20, 20, 20, .14);
 
-      border-bottom:
-        1px solid rgba(0, 0, 0, .08);
+}
 
-      z-index: 10;
-    }
 
+/* ========================================
+   RESET
+======================================== */
 
-    .marca {
-      font-size: 17px;
-      font-weight: 900;
-      letter-spacing: -.5px;
-    }
+* {
 
+  box-sizing: border-box;
 
-    .marca-oxxo {
+  -webkit-tap-highlight-color:
+  transparent;
 
-      display: inline-block;
+}
 
-      margin-left: 2px;
 
-      padding:
-        1px 6px 2px;
+html,
+body {
 
-      color: white;
+  margin: 0;
 
-      background:
-        var(--rojo-oxxo);
+  width: 100%;
 
-      border-top:
-        3px solid var(--amarillo-oxxo);
+  height: 100%;
 
-      border-bottom:
-        3px solid var(--amarillo-oxxo);
+}
 
-      border-radius: 3px;
 
-      line-height: 1;
-    }
+body {
 
+  min-height: 100dvh;
 
-    .contador {
+  overflow: hidden;
 
-      font-size: 13px;
+  background:
 
-      font-weight: 700;
+    radial-gradient(
+      circle at 15% 0%,
+      rgba(255,208,0,.12),
+      transparent 32%
+    ),
 
-      color: var(--gris);
-    }
+    radial-gradient(
+      circle at 100% 100%,
+      rgba(227,6,19,.08),
+      transparent 35%
+    ),
 
+    var(--background);
 
-    /* =========================
-       CARRUSEL
-    ========================= */
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Arial,
+    Helvetica,
+    sans-serif;
 
-    .visor {
+  color: var(--black);
 
-      position: relative;
+}
 
-      width: 100%;
-      height: 100%;
 
-      overflow: hidden;
+/* ========================================
+   APP
+======================================== */
 
-      background: white;
+.app {
 
-      touch-action: pan-y;
+  width: 100%;
 
-      user-select: none;
-      -webkit-user-select: none;
-    }
+  max-width: 520px;
 
+  height: 100dvh;
 
-    .track {
+  margin: auto;
 
-      width: 100%;
-      height: 100%;
+  display: grid;
 
-      display: flex;
+  grid-template-rows:
+    auto
+    1fr
+    auto;
 
-      transition:
-        transform .32s
-        cubic-bezier(.22, .7, .25, 1);
+  position: relative;
 
-      will-change: transform;
-    }
+}
 
 
-    .slide {
+/* ========================================
+   HEADER
+======================================== */
 
-      min-width: 100%;
+.header {
 
-      width: 100%;
-      height: 100%;
+  position: relative;
 
-      flex-shrink: 0;
+  z-index: 30;
 
-      display: flex;
-      justify-content: center;
-      align-items: center;
+  display: grid;
 
-      background: white;
+  grid-template-columns:
+    1fr
+    auto;
 
-      position: relative;
+  align-items: center;
 
-      overflow: hidden;
-    }
+  padding:
 
+    calc(
+      12px +
+      env(safe-area-inset-top)
+    )
 
-    canvas {
+    17px
 
-      display: block;
+    10px;
 
-      max-width: 100%;
-      max-height: 100%;
+}
 
-      object-fit: contain;
-    }
 
+/* LOGO */
 
-    /* =========================
-       LOADING
-    ========================= */
+.brand {
 
-    .loading {
+  display: flex;
 
-      position: absolute;
+  flex-direction: column;
 
-      inset: 0;
+  align-items: flex-start;
 
-      display: flex;
+  gap: 2px;
 
-      flex-direction: column;
+}
 
-      justify-content: center;
-      align-items: center;
 
-      gap: 18px;
+.brand-main {
 
-      background: white;
+  display: flex;
 
-      z-index: 50;
-    }
+  align-items: center;
 
+  font-weight: 950;
 
-    .spinner {
+  font-size: 20px;
 
-      width: 42px;
-      height: 42px;
+  letter-spacing: -1px;
 
-      border-radius: 50%;
+  line-height: 1;
 
-      border:
-        4px solid #eeeeee;
+}
 
-      border-top-color:
-        var(--rojo-oxxo);
 
-      animation:
-        girar .8s linear infinite;
-    }
+.oxxo-logo {
 
+  position: relative;
 
-    @keyframes girar {
+  display: inline-flex;
 
-      to {
-        transform: rotate(360deg);
-      }
+  align-items: center;
 
-    }
+  margin-left: 2px;
 
+  padding: 3px 8px;
 
-    .loading-text {
+  color: white;
 
-      font-size: 14px;
+  background:
+    var(--oxxo-red);
 
-      font-weight: 700;
+  border-radius: 4px;
 
-      color: #444;
-    }
+  border-top:
+    4px solid
+    var(--oxxo-yellow);
 
+  border-bottom:
+    4px solid
+    var(--oxxo-yellow);
 
-    /* =========================
-       INDICACIÓN DE DESLIZAR
-    ========================= */
+  line-height: .9;
 
-    .hint {
+  box-shadow:
+    0 3px 9px
+    rgba(227,6,19,.15);
 
-      position: absolute;
+}
 
-      bottom: 18px;
 
-      left: 50%;
+.brand-subtitle {
 
-      transform:
-        translateX(-50%);
+  margin-top: 3px;
 
-      background:
-        rgba(0, 0, 0, .78);
+  font-size: 9px;
 
-      color: white;
+  font-weight: 800;
 
-      padding:
-        8px 14px;
+  letter-spacing: 1.7px;
 
-      border-radius:
-        999px;
+  text-transform: uppercase;
 
-      font-size: 12px;
+  color: #8A8580;
 
-      font-weight: 700;
+}
 
-      white-space: nowrap;
 
-      z-index: 6;
+/* HEADER ACTIONS */
 
-      pointer-events: none;
+.header-actions {
 
-      transition:
-        opacity .3s ease;
-    }
+  display: flex;
 
+  align-items: center;
 
-    .hint.oculto {
-      opacity: 0;
-    }
+  gap: 9px;
 
+}
 
-    /* =========================
-       BOTÓN TIKTOK
-    ========================= */
 
-    .tiktok {
+.page-number {
 
-      position: absolute;
+  display: flex;
 
-      left: 50%;
+  align-items: center;
 
-      bottom:
-        calc(15px + env(safe-area-inset-bottom));
+  justify-content: center;
 
-      transform:
-        translateX(-50%);
+  min-width: 54px;
 
-      width:
-        calc(100% - 34px);
+  height: 34px;
 
-      max-width:
-        390px;
+  padding: 0 11px;
 
-      z-index: 20;
+  border-radius: 999px;
 
-      display: none;
-    }
+  background:
+    rgba(255,255,255,.90);
 
+  border:
+    1px solid
+    rgba(0,0,0,.06);
 
-    .tiktok.visible {
-      display: block;
-    }
+  box-shadow:
+    0 5px 18px
+    rgba(0,0,0,.05);
 
+  color: #666;
 
-    .tiktok a {
+  font-size: 12px;
 
-      display: block;
+  font-weight: 800;
 
-      width: 100%;
+}
 
-      padding:
-        14px 18px;
 
-      background: #111111;
+.icon-button {
 
-      color: white;
+  width: 34px;
 
-      text-decoration: none;
+  height: 34px;
 
-      text-align: center;
+  border: none;
 
-      font-size: 14px;
+  border-radius: 50%;
 
-      font-weight: 900;
+  background:
+    rgba(255,255,255,.95);
 
-      border-radius: 999px;
+  border:
+    1px solid
+    rgba(0,0,0,.06);
 
-      border:
-        2px solid white;
+  box-shadow:
+    0 5px 18px
+    rgba(0,0,0,.05);
 
-      box-shadow:
-        0 7px 25px
-        rgba(0, 0, 0, .25);
-    }
+  color: #333;
 
+  display: grid;
 
-    .tiktok-icon {
-      color: #ff2d55;
-    }
+  place-items: center;
 
+  cursor: pointer;
 
-    /* =========================
-       NAVEGACIÓN
-    ========================= */
+  font-size: 16px;
 
-    .navegacion {
+}
 
-      min-height: 60px;
 
-      display: grid;
+/* ========================================
+   MAIN AREA
+======================================== */
 
-      grid-template-columns:
-        48px 1fr 48px;
+.content {
 
-      align-items: center;
+  position: relative;
 
-      gap: 8px;
+  min-height: 0;
 
-      padding:
-        7px
-        12px
-        calc(7px + env(safe-area-inset-bottom));
+  padding:
 
-      background: white;
+    4px
 
-      border-top:
-        1px solid rgba(0, 0, 0, .08);
+    11px
 
-      z-index: 10;
-    }
+    7px;
 
+}
 
-    .flecha {
 
-      width: 45px;
-      height: 45px;
+/* ========================================
+   PDF CARD
+======================================== */
 
-      border: none;
+.viewer-shell {
 
-      border-radius: 50%;
+  position: relative;
 
-      background:
-        var(--rojo-oxxo);
+  width: 100%;
 
-      color: white;
+  height: 100%;
 
-      font-size: 27px;
+  overflow: hidden;
 
-      font-weight: bold;
+  border-radius: 26px;
 
-      cursor: pointer;
+  background: #FFFFFF;
 
-      display: flex;
+  border:
 
-      justify-content: center;
-      align-items: center;
+    1px solid
+    rgba(0,0,0,.07);
 
-      box-shadow:
-        0 4px 12px
-        rgba(227, 6, 19, .20);
-    }
+  box-shadow:
+    var(--shadow);
 
+}
 
-    .flecha:disabled {
 
-      opacity: .20;
+/* RED ACCENT */
 
-      box-shadow: none;
+.viewer-shell::before {
 
-      cursor: default;
-    }
+  content: "";
 
+  position: absolute;
 
-    /* =========================
-       PUNTOS
-    ========================= */
+  z-index: 4;
 
-    .puntos {
+  left: 0;
 
-      display: flex;
+  top: 0;
 
-      justify-content: center;
-      align-items: center;
+  right: 0;
 
-      gap: 7px;
+  height: 4px;
 
-      overflow: hidden;
-    }
+  background:
 
+    linear-gradient(
+      90deg,
+      var(--oxxo-red) 0 72%,
+      var(--oxxo-yellow) 72% 100%
+    );
 
-    .punto {
+}
 
-      width: 8px;
-      height: 8px;
 
-      flex-shrink: 0;
+/* ========================================
+   PROGRESS BAR
+======================================== */
 
-      border: none;
+.progress-area {
 
-      border-radius: 50%;
+  position: absolute;
 
-      background: #d5d5d5;
+  z-index: 15;
 
-      cursor: pointer;
+  top: 12px;
 
-      transition:
-        .2s ease;
-    }
+  left: 18px;
 
+  right: 18px;
 
-    .punto.activo {
+  height: 3px;
 
-      width: 22px;
+  border-radius: 999px;
 
-      border-radius: 20px;
+  overflow: hidden;
 
-      background:
-        var(--rojo-oxxo);
-    }
+  background:
+    rgba(0,0,0,.07);
 
+}
 
-    /* =========================
-       ESCRITORIO
-    ========================= */
 
-    @media (min-width: 700px) {
+.progress {
 
-      body {
-        padding: 15px;
-      }
+  height: 100%;
 
-      .app {
+  width: 0;
 
-        height:
-          calc(100dvh - 30px);
+  background:
 
-        border-radius:
-          22px;
-      }
+    linear-gradient(
+      90deg,
+      var(--oxxo-red),
+      #F23542
+    );
 
-    }
+  border-radius: inherit;
 
+  transition:
+    width .35s ease;
 
-    @media
-    (prefers-reduced-motion: reduce) {
+}
 
-      .track {
-        transition: none;
-      }
 
-    }
+/* ========================================
+   VISOR
+======================================== */
 
-  </style>
+.viewer {
+
+  width: 100%;
+
+  height: 100%;
+
+  position: relative;
+
+  overflow: hidden;
+
+  background:
+
+    linear-gradient(
+      180deg,
+      #FFFFFF,
+      #FBFAF8
+    );
+
+  touch-action: pan-y;
+
+  user-select: none;
+
+  -webkit-user-select: none;
+
+}
+
+
+.track {
+
+  display: flex;
+
+  width: 100%;
+
+  height: 100%;
+
+  will-change: transform;
+
+  transition:
+
+    transform
+    .42s
+    cubic-bezier(
+      .22,
+      .72,
+      .24,
+      1
+    );
+
+}
+
+
+.slide {
+
+  min-width: 100%;
+
+  width: 100%;
+
+  height: 100%;
+
+  flex-shrink: 0;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  padding:
+
+    21px
+
+    4px
+
+    6px;
+
+  position: relative;
+
+}
+
+
+canvas {
+
+  display: block;
+
+  max-width: 100%;
+
+  max-height: 100%;
+
+  border-radius: 4px;
+
+}
+
+
+/* ========================================
+   LOADING
+======================================== */
+
+.loading {
+
+  position: absolute;
+
+  inset: 0;
+
+  z-index: 100;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  flex-direction: column;
+
+  gap: 19px;
+
+  background:
+    #FFFFFF;
+
+}
+
+
+.loader-logo {
+
+  font-size: 23px;
+
+  font-weight: 950;
+
+  letter-spacing: -.8px;
+
+}
+
+
+.loader-logo span {
+
+  display: inline-block;
+
+  padding: 3px 7px;
+
+  margin-left: 2px;
+
+  color: white;
+
+  background:
+    var(--oxxo-red);
+
+  border-top:
+    4px solid
+    var(--oxxo-yellow);
+
+  border-bottom:
+    4px solid
+    var(--oxxo-yellow);
+
+  border-radius: 4px;
+
+}
+
+
+.loader-bar {
+
+  width: 130px;
+
+  height: 4px;
+
+  overflow: hidden;
+
+  border-radius: 999px;
+
+  background:
+    #ECECEC;
+
+}
+
+
+.loader-bar::after {
+
+  content: "";
+
+  display: block;
+
+  width: 45%;
+
+  height: 100%;
+
+  border-radius: inherit;
+
+  background:
+    var(--oxxo-red);
+
+  animation:
+    loadingBar
+    1.1s ease-in-out
+    infinite;
+
+}
+
+
+@keyframes loadingBar {
+
+  0% {
+
+    transform:
+      translateX(-110%);
+
+  }
+
+  100% {
+
+    transform:
+      translateX(290%);
+
+  }
+
+}
+
+
+.loading small {
+
+  color: #888;
+
+  font-size: 11px;
+
+  font-weight: 600;
+
+}
+
+
+/* ========================================
+   SWIPE HINT
+======================================== */
+
+.swipe-hint {
+
+  position: absolute;
+
+  z-index: 25;
+
+  left: 50%;
+
+  bottom: 18px;
+
+  transform:
+    translateX(-50%);
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  padding:
+
+    9px
+
+    14px;
+
+  border-radius: 999px;
+
+  background:
+    rgba(17,17,17,.82);
+
+  backdrop-filter:
+    blur(12px);
+
+  -webkit-backdrop-filter:
+    blur(12px);
+
+  color: white;
+
+  box-shadow:
+    0 7px 20px
+    rgba(0,0,0,.18);
+
+  font-size: 11px;
+
+  font-weight: 700;
+
+  white-space: nowrap;
+
+  pointer-events: none;
+
+  transition:
+    opacity .35s ease,
+    transform .35s ease;
+
+}
+
+
+.swipe-hint.hide {
+
+  opacity: 0;
+
+  transform:
+    translate(-50%,8px);
+
+}
+
+
+/* ========================================
+   TIKTOK CTA
+======================================== */
+
+.tiktok-cta {
+
+  position: absolute;
+
+  z-index: 40;
+
+  left: 17px;
+
+  right: 17px;
+
+  bottom: 18px;
+
+  opacity: 0;
+
+  visibility: hidden;
+
+  transform:
+    translateY(15px);
+
+  transition:
+    .35s ease;
+
+}
+
+
+.tiktok-cta.visible {
+
+  opacity: 1;
+
+  visibility: visible;
+
+  transform:
+    translateY(0);
+
+}
+
+
+.tiktok-cta a {
+
+  min-height: 54px;
+
+  padding:
+
+    10px
+
+    16px;
+
+  display: grid;
+
+  grid-template-columns:
+    38px
+    1fr
+    24px;
+
+  align-items: center;
+
+  gap: 10px;
+
+  text-decoration: none;
+
+  color: white;
+
+  background:
+    rgba(15,15,15,.94);
+
+  backdrop-filter:
+    blur(16px);
+
+  -webkit-backdrop-filter:
+    blur(16px);
+
+  border:
+
+    1px solid
+    rgba(255,255,255,.18);
+
+  border-radius: 18px;
+
+  box-shadow:
+    0 13px 35px
+    rgba(0,0,0,.28);
+
+}
+
+
+.tiktok-icon {
+
+  width: 38px;
+
+  height: 38px;
+
+  display: grid;
+
+  place-items: center;
+
+  border-radius: 12px;
+
+  font-size: 18px;
+
+  background:
+
+    linear-gradient(
+      135deg,
+      #25F4EE,
+      #FE2C55
+    );
+
+}
+
+
+.tiktok-copy {
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 2px;
+
+}
+
+
+.tiktok-copy strong {
+
+  font-size: 13px;
+
+  font-weight: 850;
+
+}
+
+
+.tiktok-copy small {
+
+  color:
+    rgba(255,255,255,.68);
+
+  font-size: 9px;
+
+  font-weight: 600;
+
+}
+
+
+.tiktok-arrow {
+
+  font-size: 21px;
+
+  opacity: .7;
+
+}
+
+
+/* ========================================
+   NAVIGATION
+======================================== */
+
+.navigation {
+
+  display: grid;
+
+  grid-template-columns:
+    54px
+    1fr
+    54px;
+
+  align-items: center;
+
+  gap: 10px;
+
+  padding:
+
+    9px
+
+    15px
+
+    calc(
+      10px +
+      env(safe-area-inset-bottom)
+    );
+
+}
+
+
+/* NAV BUTTON */
+
+.nav-button {
+
+  width: 50px;
+
+  height: 50px;
+
+  display: grid;
+
+  place-items: center;
+
+  border: none;
+
+  border-radius: 17px;
+
+  cursor: pointer;
+
+  color: white;
+
+  background:
+
+    linear-gradient(
+      145deg,
+      #EA0B18,
+      var(--oxxo-dark-red)
+    );
+
+  box-shadow:
+
+    0 9px 24px
+    rgba(227,6,19,.23);
+
+  font-size: 27px;
+
+  font-weight: 500;
+
+  transition:
+    transform .15s ease,
+    opacity .2s ease;
+
+}
+
+
+.nav-button:active {
+
+  transform:
+    scale(.92);
+
+}
+
+
+.nav-button:disabled {
+
+  opacity: .18;
+
+  box-shadow: none;
+
+}
+
+
+/* ========================================
+   DOTS
+======================================== */
+
+.dots {
+
+  min-width: 0;
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  gap: 7px;
+
+}
+
+
+.dot {
+
+  width: 7px;
+
+  height: 7px;
+
+  padding: 0;
+
+  border: none;
+
+  border-radius: 50%;
+
+  background:
+    #CBC7C2;
+
+  transition:
+    all .3s ease;
+
+  cursor: pointer;
+
+}
+
+
+.dot.active {
+
+  width: 25px;
+
+  border-radius: 999px;
+
+  background:
+    var(--oxxo-red);
+
+}
+
+
+/* ========================================
+   FOOTNOTE
+======================================== */
+
+.age {
+
+  position: absolute;
+
+  z-index: 30;
+
+  right: 20px;
+
+  bottom: 9px;
+
+  font-size: 8px;
+
+  font-weight: 800;
+
+  color:
+    rgba(0,0,0,.30);
+
+  pointer-events: none;
+
+}
+
+
+/* ========================================
+   ERROR
+======================================== */
+
+.error {
+
+  display: none;
+
+  position: absolute;
+
+  inset: 0;
+
+  z-index: 150;
+
+  background: white;
+
+  align-items: center;
+
+  justify-content: center;
+
+  text-align: center;
+
+  padding: 30px;
+
+}
+
+
+.error-box {
+
+  max-width: 290px;
+
+}
+
+
+.error-icon {
+
+  margin: auto auto 15px;
+
+  width: 48px;
+
+  height: 48px;
+
+  display: grid;
+
+  place-items: center;
+
+  border-radius: 15px;
+
+  background:
+    rgba(227,6,19,.09);
+
+  color:
+    var(--oxxo-red);
+
+  font-size: 22px;
+
+  font-weight: bold;
+
+}
+
+
+.error strong {
+
+  display: block;
+
+  font-size: 16px;
+
+  margin-bottom: 8px;
+
+}
+
+
+.error p {
+
+  margin: 0;
+
+  color: #777;
+
+  font-size: 12px;
+
+  line-height: 1.5;
+
+}
+
+
+/* ========================================
+   DESKTOP
+======================================== */
+
+@media (
+  min-width: 650px
+) {
+
+  body {
+
+    padding:
+      18px;
+
+  }
+
+
+  .app {
+
+    height:
+      calc(100dvh - 36px);
+
+  }
+
+
+  .viewer-shell {
+
+    border-radius:
+      30px;
+
+  }
+
+}
+
+
+/* ========================================
+   REDUCED MOTION
+======================================== */
+
+@media (
+  prefers-reduced-motion:
+  reduce
+) {
+
+  .track {
+
+    transition:
+      none;
+
+  }
+
+}
+
+</style>
 
 </head>
 
@@ -546,63 +1258,164 @@
 <body>
 
 
-  <main class="app">
+<main class="app">
 
 
-    <!-- CABECERA -->
+<!-- ======================================
+     HEADER
+====================================== -->
 
-    <header class="header">
+<header class="header">
 
-      <div class="marca">
 
-        RECETARI
+  <div class="brand">
 
-        <span class="marca-oxxo">
-          OXXO
-        </span>
+    <div class="brand-main">
 
-      </div>
+      RECETARI
 
+      <span class="oxxo-logo">
+        OXXO
+      </span>
+
+    </div>
+
+    <div class="brand-subtitle">
+
+      BuzzBallz Edition
+
+    </div>
+
+  </div>
+
+
+
+  <div class="header-actions">
+
+
+    <div
+      class="page-number"
+      id="counter"
+    >
+
+      · / ·
+
+    </div>
+
+
+    <button
+      class="icon-button"
+      id="fullscreen"
+      aria-label="Pantalla completa"
+    >
+
+      ⛶
+
+    </button>
+
+
+  </div>
+
+
+</header>
+
+
+
+<!-- ======================================
+     CONTENT
+====================================== -->
+
+<section class="content">
+
+
+  <div class="viewer-shell">
+
+
+    <!-- PROGRESS -->
+
+    <div class="progress-area">
 
       <div
-        class="contador"
-        id="contador">
+        class="progress"
+        id="progress"
+      ></div>
 
-        1 / 1
-
-      </div>
-
-    </header>
+    </div>
 
 
 
-    <!-- VISOR -->
+    <!-- VIEWER -->
 
-    <section
-      class="visor"
-      id="visor">
+    <div
+      class="viewer"
+      id="viewer"
+    >
 
-
-      <!-- PÁGINAS DEL PDF -->
 
       <div
         class="track"
-        id="track">
+        id="track"
+      ></div>
+
+
+
+      <!-- LOADER -->
+
+      <div
+        class="loading"
+        id="loading"
+      >
+
+        <div class="loader-logo">
+
+          RECETARI<span>OXXO</span>
+
+        </div>
+
+
+        <div class="loader-bar"></div>
+
+
+        <small>
+
+          Preparando tus recetas...
+
+        </small>
+
       </div>
 
 
 
-      <!-- CARGANDO -->
+      <!-- ERROR -->
 
       <div
-        class="loading"
-        id="loading">
+        class="error"
+        id="error"
+      >
 
-        <div class="spinner"></div>
+        <div class="error-box">
 
-        <div class="loading-text">
+          <div class="error-icon">
 
-          Cargando recetario...
+            !
+
+          </div>
+
+          <strong>
+
+            No pudimos cargar
+            el recetario
+
+          </strong>
+
+          <p>
+
+            Verifica que
+            <b>recetario.pdf</b>
+            esté en la misma carpeta
+            que index.html.
+
+          </p>
 
         </div>
 
@@ -610,13 +1423,18 @@
 
 
 
-      <!-- AYUDA -->
+      <!-- SWIPE -->
 
       <div
-        class="hint"
-        id="hint">
+        class="swipe-hint"
+        id="hint"
+      >
 
-        Desliza para ver las recetas →
+        <span>←</span>
+
+        Desliza para descubrir
+
+        <span>→</span>
 
       </div>
 
@@ -625,230 +1443,317 @@
       <!-- TIKTOK -->
 
       <div
-        class="tiktok"
-        id="tiktok">
+        class="tiktok-cta"
+        id="tiktok"
+      >
 
         <a
           href="https://www.tiktok.com/discover/buzz-ballz-mexico-oxxo"
           target="_blank"
-          rel="noopener">
+          rel="noopener"
+        >
 
-          <span class="tiktok-icon">
-            ▶
-          </span>
+          <div class="tiktok-icon">
 
-          Más preparaciones en TikTok
+            ♪
+
+          </div>
+
+
+          <div class="tiktok-copy">
+
+            <strong>
+
+              ¿Quieres más recetas?
+
+            </strong>
+
+            <small>
+
+              Descubre preparaciones
+              en TikTok
+
+            </small>
+
+          </div>
+
+
+          <div class="tiktok-arrow">
+
+            ›
+
+          </div>
 
         </a>
 
       </div>
 
 
-    </section>
+    </div>
+
+
+  </div>
+
+
+</section>
 
 
 
-    <!-- NAVEGACIÓN -->
+<!-- ======================================
+     NAVIGATION
+====================================== -->
 
-    <nav class="navegacion">
-
-
-      <button
-        class="flecha"
-        id="anterior"
-        aria-label="Página anterior">
-
-        ‹
-
-      </button>
+<nav class="navigation">
 
 
+  <button
+    class="nav-button"
+    id="prev"
+    aria-label="Anterior"
+  >
 
-      <div
-        class="puntos"
-        id="puntos">
-      </div>
+    ‹
+
+  </button>
 
 
 
-      <button
-        class="flecha"
-        id="siguiente"
-        aria-label="Página siguiente">
-
-        ›
-
-      </button>
+  <div
+    class="dots"
+    id="dots"
+  ></div>
 
 
-    </nav>
+
+  <button
+    class="nav-button"
+    id="next"
+    aria-label="Siguiente"
+  >
+
+    ›
+
+  </button>
 
 
-  </main>
+</nav>
+
+
+</main>
 
 
 
 <script>
 
 
-/* ==================================================
+/* ========================================
    CONFIGURACIÓN
-================================================== */
+======================================== */
 
 
-const PDF_URL = "recetario.pdf";
+const PDF_URL =
+  "./recetario.pdf";
 
 
-pdfjsLib.GlobalWorkerOptions.workerSrc =
+pdfjsLib
+.GlobalWorkerOptions
+.workerSrc =
+
 "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
 
 
 
-/* ==================================================
+/* ========================================
    ELEMENTOS
-================================================== */
+======================================== */
 
 
 const track =
-document.getElementById("track");
+document.getElementById(
+  "track"
+);
 
 
-const visor =
-document.getElementById("visor");
+const viewer =
+document.getElementById(
+  "viewer"
+);
 
 
-const contador =
-document.getElementById("contador");
+const counter =
+document.getElementById(
+  "counter"
+);
 
 
-const anterior =
-document.getElementById("anterior");
-
-
-const siguiente =
-document.getElementById("siguiente");
-
-
-const puntos =
-document.getElementById("puntos");
+const progress =
+document.getElementById(
+  "progress"
+);
 
 
 const loading =
-document.getElementById("loading");
+document.getElementById(
+  "loading"
+);
+
+
+const error =
+document.getElementById(
+  "error"
+);
+
+
+const prev =
+document.getElementById(
+  "prev"
+);
+
+
+const next =
+document.getElementById(
+  "next"
+);
+
+
+const dotsContainer =
+document.getElementById(
+  "dots"
+);
 
 
 const hint =
-document.getElementById("hint");
+document.getElementById(
+  "hint"
+);
 
 
 const tiktok =
-document.getElementById("tiktok");
+document.getElementById(
+  "tiktok"
+);
+
+
+const fullscreen =
+document.getElementById(
+  "fullscreen"
+);
 
 
 
-/* ==================================================
-   VARIABLES
-================================================== */
+/* ========================================
+   ESTADO
+======================================== */
 
 
 let pdf = null;
 
-let paginaActual = 0;
+let currentPage = 0;
 
-let totalPaginas = 0;
+let totalPages = 0;
 
-let paginas = [];
+let slides = [];
 
+let startX = 0;
 
-let inicioX = 0;
-
-let inicioY = 0;
-
-let arrastrando = false;
+let startY = 0;
 
 
 
-/* ==================================================
+/* ========================================
    CARGAR PDF
-================================================== */
+======================================== */
 
 
-async function cargarPDF() {
+async function init() {
 
 
   try {
 
 
-    pdf =
-      await pdfjsLib
-      .getDocument(PDF_URL)
-      .promise;
+    pdf = await pdfjsLib
+
+    .getDocument({
+      url: PDF_URL
+    })
+
+    .promise;
 
 
-    totalPaginas =
+
+    totalPages =
       pdf.numPages;
 
 
-    contador.textContent =
-      `1 / ${totalPaginas}`;
+
+    createSlides();
+
+    createDots();
 
 
-    crearDiapositivas();
+
+    /*
+      Renderizamos portada
+      primero para cargar rápido.
+    */
 
 
-    await renderizarTodas();
-
-
-    crearPuntos();
-
-
-    actualizar();
+    await renderPage(0);
 
 
     loading.style.display =
       "none";
 
 
-    setTimeout(() => {
+    updateUI();
 
-      hint.classList.add("oculto");
 
-    }, 4000);
+
+    /*
+      Precarga página 2.
+    */
+
+
+    if(
+      totalPages > 1
+    ) {
+
+      renderPage(1);
+
+    }
+
+
+
+    setTimeout(
+      () => {
+
+        hint.classList.add(
+          "hide"
+        );
+
+      },
+
+      4500
+    );
 
 
   }
 
 
-  catch(error) {
+  catch(err) {
 
 
-    console.error(error);
+    console.error(
+      err
+    );
 
 
-    loading.innerHTML = `
+    loading.style.display =
+      "none";
 
-      <div style="
-        text-align:center;
-        padding:25px;
-      ">
 
-        <strong>
-          No se pudo cargar el recetario
-        </strong>
-
-        <br><br>
-
-        Verifica que exista:
-
-        <br>
-
-        <code>
-          recetario.pdf
-        </code>
-
-      </div>
-
-    `;
+    error.style.display =
+      "flex";
 
 
   }
@@ -858,29 +1763,33 @@ async function cargarPDF() {
 
 
 
-/* ==================================================
-   CREAR DIAPOSITIVAS
-================================================== */
+/* ========================================
+   CREAR SLIDES
+======================================== */
 
 
-function crearDiapositivas() {
+function createSlides() {
 
 
-  track.innerHTML = "";
+  track.innerHTML =
+    "";
 
 
-  paginas = [];
+  slides =
+    [];
 
 
   for(
-    let i = 1;
-    i <= totalPaginas;
+    let i = 0;
+    i < totalPages;
     i++
   ) {
 
 
     const slide =
-      document.createElement("article");
+      document.createElement(
+        "article"
+      );
 
 
     slide.className =
@@ -888,314 +1797,32 @@ function crearDiapositivas() {
 
 
     const canvas =
-      document.createElement("canvas");
-
-
-    canvas.setAttribute(
-      "aria-label",
-      `Página ${i}`
-    );
-
-
-    slide.appendChild(canvas);
-
-
-    track.appendChild(slide);
-
-
-    paginas.push({
-      slide,
-      canvas,
-      numero: i
-    });
-
-
-  }
-
-
-}
-
-
-
-/* ==================================================
-   RENDERIZAR TODAS LAS PÁGINAS
-================================================== */
-
-
-async function renderizarTodas() {
-
-
-  for(
-    const item of paginas
-  ) {
-
-
-    await renderizarPagina(
-      item.numero,
-      item.canvas
-    );
-
-
-  }
-
-
-}
-
-
-
-/* ==================================================
-   RENDERIZAR UNA PÁGINA
-================================================== */
-
-
-async function renderizarPagina(
-  numero,
-  canvas
-) {
-
-
-  const pagina =
-    await pdf.getPage(numero);
-
-
-  const viewportBase =
-    pagina.getViewport({
-      scale: 1
-    });
-
-
-  const anchoDisponible =
-    visor.clientWidth;
-
-
-  const altoDisponible =
-    visor.clientHeight;
-
-
-  const escalaCSS =
-    Math.min(
-
-      anchoDisponible
-      /
-      viewportBase.width,
-
-      altoDisponible
-      /
-      viewportBase.height
-
-    );
-
-
-  /*
-     Calidad de renderizado.
-
-     2 funciona muy bien en teléfonos
-     Retina sin consumir demasiada RAM.
-  */
-
-
-  const pixelRatio =
-    Math.min(
-      window.devicePixelRatio || 1,
-      2
-    );
-
-
-  const escalaRender =
-    escalaCSS
-    *
-    pixelRatio;
-
-
-  const viewport =
-    pagina.getViewport({
-      scale:
-      escalaRender
-    });
-
-
-  canvas.width =
-    Math.floor(
-      viewport.width
-    );
-
-
-  canvas.height =
-    Math.floor(
-      viewport.height
-    );
-
-
-  canvas.style.width =
-    `${viewport.width / pixelRatio}px`;
-
-
-  canvas.style.height =
-    `${viewport.height / pixelRatio}px`;
-
-
-  const contexto =
-    canvas.getContext(
-      "2d",
-      {
-        alpha: false
-      }
-    );
-
-
-  contexto.fillStyle =
-    "#ffffff";
-
-
-  contexto.fillRect(
-    0,
-    0,
-    canvas.width,
-    canvas.height
-  );
-
-
-  await pagina.render({
-
-    canvasContext:
-      contexto,
-
-    viewport:
-      viewport
-
-  }).promise;
-
-
-}
-
-
-
-/* ==================================================
-   CREAR PUNTOS
-================================================== */
-
-
-function crearPuntos() {
-
-
-  puntos.innerHTML = "";
-
-
-  for(
-    let i = 0;
-    i < totalPaginas;
-    i++
-  ) {
-
-
-    const punto =
-      document.createElement("button");
-
-
-    punto.className =
-      "punto";
-
-
-    punto.setAttribute(
-      "aria-label",
-      `Ir a la página ${i + 1}`
-    );
-
-
-    punto.addEventListener(
-      "click",
-      () => irPagina(i)
-    );
-
-
-    puntos.appendChild(
-      punto
-    );
-
-
-  }
-
-
-}
-
-
-
-/* ==================================================
-   ACTUALIZAR CARRUSEL
-================================================== */
-
-
-function actualizar() {
-
-
-  track.style.transform =
-    `translateX(-${paginaActual * 100}%)`;
-
-
-  contador.textContent =
-    `${paginaActual + 1} / ${totalPaginas}`;
-
-
-  anterior.disabled =
-    paginaActual === 0;
-
-
-  siguiente.disabled =
-    paginaActual === totalPaginas - 1;
-
-
-  document
-  .querySelectorAll(".punto")
-  .forEach(
-    (punto, index) => {
-
-
-      punto.classList.toggle(
-        "activo",
-        index === paginaActual
+      document.createElement(
+        "canvas"
       );
 
 
-    }
-  );
-
-
-  /* Mostrar TikTok solo en última hoja */
-
-
-  if(
-    paginaActual ===
-    totalPaginas - 1
-  ) {
-
-
-    tiktok.classList.add(
-      "visible"
+    slide.appendChild(
+      canvas
     );
 
 
-  }
-
-
-  else {
-
-
-    tiktok.classList.remove(
-      "visible"
+    track.appendChild(
+      slide
     );
 
 
-  }
+    slides.push({
 
+      canvas,
 
-  if(
-    paginaActual > 0
-  ) {
+      rendered:
+        false,
 
+      rendering:
+        false
 
-    hint.classList.add(
-      "oculto"
-    );
+    });
 
 
   }
@@ -1205,154 +1832,620 @@ function actualizar() {
 
 
 
-/* ==================================================
-   IR A PÁGINA
-================================================== */
+/* ========================================
+   RENDER PDF PAGE
+======================================== */
 
 
-function irPagina(numero) {
+async function renderPage(
+  index,
+  force = false
+) {
 
 
-  paginaActual =
-    Math.max(
-      0,
+  if(
+    index < 0
+    ||
+    index >= totalPages
+  ) {
+
+    return;
+
+  }
+
+
+  const item =
+    slides[index];
+
+
+  if(
+    item.rendering
+  ) {
+
+    return;
+
+  }
+
+
+  if(
+    item.rendered
+    &&
+    !force
+  ) {
+
+    return;
+
+  }
+
+
+  item.rendering =
+    true;
+
+
+  try {
+
+
+    const page =
+      await pdf.getPage(
+        index + 1
+      );
+
+
+    const base =
+      page.getViewport({
+        scale: 1
+      });
+
+
+    /*
+      Un pequeño margen interno
+      evita que el PDF toque
+      directamente los bordes.
+    */
+
+
+    const availableWidth =
+      viewer.clientWidth - 8;
+
+
+    const availableHeight =
+      viewer.clientHeight - 26;
+
+
+    const fitScale =
       Math.min(
-        numero,
-        totalPaginas - 1
-      )
+
+        availableWidth
+        /
+        base.width,
+
+        availableHeight
+        /
+        base.height
+
+      );
+
+
+    /*
+      Excelente calidad Retina,
+      limitado a 2 para cuidar
+      memoria del iPhone.
+    */
+
+
+    const pixelRatio =
+      Math.min(
+
+        window.devicePixelRatio
+        ||
+        1,
+
+        2
+
+      );
+
+
+    const viewport =
+      page.getViewport({
+
+        scale:
+          fitScale
+          *
+          pixelRatio
+
+      });
+
+
+
+    const canvas =
+      item.canvas;
+
+
+    canvas.width =
+      Math.round(
+        viewport.width
+      );
+
+
+    canvas.height =
+      Math.round(
+        viewport.height
+      );
+
+
+    canvas.style.width =
+
+      `${
+
+        viewport.width
+        /
+        pixelRatio
+
+      }px`;
+
+
+    canvas.style.height =
+
+      `${
+
+        viewport.height
+        /
+        pixelRatio
+
+      }px`;
+
+
+
+    const context =
+      canvas.getContext(
+        "2d",
+        {
+          alpha: false
+        }
+      );
+
+
+    context.fillStyle =
+      "#FFFFFF";
+
+
+    context.fillRect(
+
+      0,
+
+      0,
+
+      canvas.width,
+
+      canvas.height
+
     );
 
 
-  actualizar();
 
+    await page.render({
 
-}
+      canvasContext:
+        context,
 
+      viewport:
+        viewport
 
-
-/* ==================================================
-   BOTONES
-================================================== */
-
-
-anterior.addEventListener(
-  "click",
-  () => {
-
-    irPagina(
-      paginaActual - 1
-    );
-
-  }
-);
-
-
-siguiente.addEventListener(
-  "click",
-  () => {
-
-    irPagina(
-      paginaActual + 1
-    );
-
-  }
-);
+    }).promise;
 
 
 
-/* ==================================================
-   DESLIZAMIENTO EN CELULAR
-================================================== */
-
-
-visor.addEventListener(
-  "pointerdown",
-  evento => {
-
-
-    inicioX =
-      evento.clientX;
-
-
-    inicioY =
-      evento.clientY;
-
-
-    arrastrando =
+    item.rendered =
       true;
 
 
   }
+
+
+  catch(err) {
+
+
+    console.error(
+
+      `Error página ${
+        index + 1
+      }`,
+
+      err
+
+    );
+
+
+  }
+
+
+  finally {
+
+
+    item.rendering =
+      false;
+
+
+  }
+
+
+}
+
+
+
+/* ========================================
+   DOTS
+======================================== */
+
+
+function createDots() {
+
+
+  dotsContainer.innerHTML =
+    "";
+
+
+  for(
+    let i = 0;
+    i < totalPages;
+    i++
+  ) {
+
+
+    const dot =
+      document.createElement(
+        "button"
+      );
+
+
+    dot.className =
+      "dot";
+
+
+    dot.setAttribute(
+
+      "aria-label",
+
+      `Página ${i + 1}`
+
+    );
+
+
+    dot.addEventListener(
+
+      "click",
+
+      () => goTo(i)
+
+    );
+
+
+    dotsContainer
+    .appendChild(
+      dot
+    );
+
+
+  }
+
+
+}
+
+
+
+/* ========================================
+   UPDATE UI
+======================================== */
+
+
+function updateUI() {
+
+
+  track.style.transform =
+
+    `translateX(-${
+      currentPage * 100
+    }%)`;
+
+
+
+  counter.textContent =
+
+    `${currentPage + 1} / ${totalPages}`;
+
+
+
+  const percentage =
+
+    (
+      (
+        currentPage + 1
+      )
+      /
+      totalPages
+    )
+    *
+    100;
+
+
+
+  progress.style.width =
+
+    `${percentage}%`;
+
+
+
+  prev.disabled =
+
+    currentPage === 0;
+
+
+
+  next.disabled =
+
+    currentPage ===
+    totalPages - 1;
+
+
+
+  document
+  .querySelectorAll(
+    ".dot"
+  )
+  .forEach(
+
+    (dot,index) => {
+
+
+      dot.classList.toggle(
+
+        "active",
+
+        index ===
+        currentPage
+
+      );
+
+
+    }
+
+  );
+
+
+
+  /*
+    CTA TikTok solo
+    en última página.
+  */
+
+
+  tiktok.classList.toggle(
+
+    "visible",
+
+    currentPage ===
+    totalPages - 1
+
+  );
+
+
+
+  if(
+    currentPage > 0
+  ) {
+
+
+    hint.classList.add(
+      "hide"
+    );
+
+
+  }
+
+
+}
+
+
+
+/* ========================================
+   CHANGE PAGE
+======================================== */
+
+
+async function goTo(
+  index
+) {
+
+
+  const newIndex =
+
+    Math.max(
+
+      0,
+
+      Math.min(
+
+        index,
+
+        totalPages - 1
+
+      )
+
+    );
+
+
+  if(
+    newIndex ===
+    currentPage
+  ) {
+
+    return;
+
+  }
+
+
+  currentPage =
+    newIndex;
+
+
+  updateUI();
+
+
+  await renderPage(
+    currentPage
+  );
+
+
+  /*
+    Precarga página siguiente
+  */
+
+
+  renderPage(
+    currentPage + 1
+  );
+
+
+  /*
+    También precargamos
+    la anterior.
+  */
+
+
+  renderPage(
+    currentPage - 1
+  );
+
+
+}
+
+
+
+/* ========================================
+   BUTTONS
+======================================== */
+
+
+prev.addEventListener(
+
+  "click",
+
+  () => {
+
+    goTo(
+      currentPage - 1
+    );
+
+  }
+
 );
 
 
 
-visor.addEventListener(
-  "pointerup",
-  evento => {
+next.addEventListener(
+
+  "click",
+
+  () => {
+
+    goTo(
+      currentPage + 1
+    );
+
+  }
+
+);
 
 
-    if(
-      !arrastrando
-    )
-      return;
+
+/* ========================================
+   SWIPE
+======================================== */
 
 
-    arrastrando =
-      false;
+viewer.addEventListener(
+
+  "touchstart",
+
+  event => {
 
 
-    const desplazamientoX =
-      evento.clientX
+    const touch =
+      event.touches[0];
+
+
+    startX =
+      touch.clientX;
+
+
+    startY =
+      touch.clientY;
+
+
+  },
+
+  {
+    passive: true
+  }
+
+);
+
+
+
+viewer.addEventListener(
+
+  "touchend",
+
+  event => {
+
+
+    const touch =
+      event.changedTouches[0];
+
+
+    const dx =
+
+      touch.clientX
       -
-      inicioX;
+      startX;
 
 
-    const desplazamientoY =
-      evento.clientY
+    const dy =
+
+      touch.clientY
       -
-      inicioY;
+      startY;
+
 
 
     /*
-
-      Solo cambia página
-      cuando el movimiento
-      es claramente horizontal.
-
+      Detectamos swipe
+      horizontal real.
     */
 
 
     if(
 
-      Math.abs(
-        desplazamientoX
-      )
-      >
-      45
+      Math.abs(dx) > 45
 
       &&
 
-      Math.abs(
-        desplazamientoX
-      )
+      Math.abs(dx)
       >
-      Math.abs(
-        desplazamientoY
-      )
+      Math.abs(dy)
       *
-      1.15
+      1.12
 
     ) {
 
 
       if(
-        desplazamientoX < 0
+        dx < 0
       ) {
 
 
-        irPagina(
-          paginaActual + 1
+        goTo(
+          currentPage + 1
         );
 
 
@@ -1362,8 +2455,8 @@ visor.addEventListener(
       else {
 
 
-        irPagina(
-          paginaActual - 1
+        goTo(
+          currentPage - 1
         );
 
 
@@ -1373,41 +2466,36 @@ visor.addEventListener(
     }
 
 
+  },
+
+  {
+    passive: true
   }
+
 );
 
 
 
-visor.addEventListener(
-  "pointercancel",
-  () => {
-
-    arrastrando =
-      false;
-
-  }
-);
-
-
-
-/* ==================================================
-   FLECHAS DE TECLADO
-================================================== */
+/* ========================================
+   KEYBOARD
+======================================== */
 
 
 document.addEventListener(
+
   "keydown",
-  evento => {
+
+  event => {
 
 
     if(
-      evento.key ===
+      event.key ===
       "ArrowRight"
     ) {
 
 
-      irPagina(
-        paginaActual + 1
+      goTo(
+        currentPage + 1
       );
 
 
@@ -1415,13 +2503,13 @@ document.addEventListener(
 
 
     if(
-      evento.key ===
+      event.key ===
       "ArrowLeft"
     ) {
 
 
-      irPagina(
-        paginaActual - 1
+      goTo(
+        currentPage - 1
       );
 
 
@@ -1429,20 +2517,88 @@ document.addEventListener(
 
 
   }
+
 );
 
 
 
-/* ==================================================
-   REDIMENSIONAR
-================================================== */
+/* ========================================
+   FULLSCREEN
+======================================== */
+
+
+fullscreen.addEventListener(
+
+  "click",
+
+  async () => {
+
+
+    try {
+
+
+      if(
+        !document.fullscreenElement
+      ) {
+
+
+        await document
+        .documentElement
+        .requestFullscreen();
+
+
+      }
+
+
+      else {
+
+
+        await document
+        .exitFullscreen();
+
+
+      }
+
+
+    }
+
+
+    catch(err) {
+
+
+      /*
+        Safari iPhone puede
+        ignorar Fullscreen API.
+        No afecta funcionamiento.
+      */
+
+
+      console.log(
+        "Fullscreen no disponible"
+      );
+
+
+    }
+
+
+  }
+
+);
+
+
+
+/* ========================================
+   RESIZE / ORIENTATION
+======================================== */
 
 
 let resizeTimer;
 
 
 window.addEventListener(
+
   "resize",
+
   () => {
 
 
@@ -1453,32 +2609,56 @@ window.addEventListener(
 
     resizeTimer =
       setTimeout(
+
         async () => {
 
 
-          if(!pdf)
+          if(
+            !pdf
+          ) {
+
             return;
 
+          }
 
-          await renderizarTodas();
+
+          await renderPage(
+            currentPage,
+            true
+          );
+
+
+          renderPage(
+            currentPage + 1,
+            true
+          );
 
 
         },
+
         300
+
       );
 
 
   }
+
 );
 
 
 
-/* ==================================================
-   INICIAR
-================================================== */
+/* ========================================
+   START
+======================================== */
 
 
-cargarPDF();
+window.addEventListener(
+
+  "load",
+
+  init
+
+);
 
 
 </script>
